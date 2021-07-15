@@ -8,12 +8,8 @@ import com.tool.dag.task.sort.SortResult
  * Created by wxk on 2021/7/14.
  */
 class TaskCreator(sortResult: SortResult) {
-    var taskList:List<StartTask>
-    var childMap:Map<Class<out StartTask>,ArrayList<StartTask>>
-    init {
-      taskList = sortResult.taskList
-      childMap = sortResult.childMap
-    }
+    var taskList:List<StartTask> = sortResult.taskList
+    var childMap:Map<Class<out StartTask>,ArrayList<StartTask>> = sortResult.childMap
 
     class Builder{
         private var mTask : StartTask?=null
