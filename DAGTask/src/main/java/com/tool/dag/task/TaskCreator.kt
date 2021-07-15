@@ -1,5 +1,6 @@
 package com.tool.dag.task
 
+import com.tool.dag.task.exception.StartTaskException
 import com.tool.dag.task.sort.DAGSort
 import com.tool.dag.task.sort.SortResult
 
@@ -17,7 +18,11 @@ class TaskCreator(sortResult: SortResult) {
     class Builder{
         private var mTask : StartTask?=null
         private var taskList = ArrayList<StartTask>()
+        private var checkSet = hashSetOf<Class<out StartTask>>()
         fun <T:StartTask>addTask(task:T):Builder{
+            if (!checkSet.add(task::class.java)){
+                throw StartTaskException("cant add the same name task")
+            }
             mTask = task
             if (mTask != null){
                 mTask?.let {
@@ -48,6 +53,7 @@ class TaskCreator(sortResult: SortResult) {
         }
 
         fun build():TaskCreator{
+            checkSet.clear()
             val result = DAGSort.sort(taskList)
             return TaskCreator(result)
         }
