@@ -2,6 +2,7 @@ package com.tool.dag.task
 
 import android.os.Looper
 import com.tool.dag.task.sort.DAGSort
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Created by wxk on 2021/7/14.
@@ -9,11 +10,11 @@ import com.tool.dag.task.sort.DAGSort
 object StartTaskManager {
     private lateinit var mTaskCreator: TaskCreator
     private lateinit var mTaskDispatcher: TaskDispatcher
-    private var successCount = 0
+    private var successCount :AtomicInteger = AtomicInteger(0)
     private lateinit var completeListener : ()->Unit
     fun addContextAndTask(taskCreator:TaskCreator):StartTaskManager{
         mTaskCreator = taskCreator
-        successCount = 0
+        successCount = AtomicInteger(0)
         return this
     }
 
@@ -31,8 +32,8 @@ object StartTaskManager {
 
     private var finishTask:(task:StartTask)->Unit = {
         it.setFinished()
-        successCount++
-        if (successCount == mTaskCreator.taskList.size){
+        successCount.getAndAdd(1)
+        if (successCount.get() == mTaskCreator.taskList.size){
             onCompleted()
         }else{
             DAGSort.getReadyTask(it, mTaskCreator.childMap)?.forEach { task->
