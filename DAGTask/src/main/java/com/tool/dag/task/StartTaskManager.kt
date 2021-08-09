@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger
 /**
  * Created by wxk on 2021/7/14.
  */
-object StartTaskManager {
+open class StartTaskManager {
     private lateinit var mTaskCreator: TaskCreator
     private lateinit var mTaskDispatcher: TaskDispatcher
     private var successCount :AtomicInteger = AtomicInteger(0)

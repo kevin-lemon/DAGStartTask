@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
                 .addTask(SecondTask()).after(FirstTask::class.java)
                 .addTask(FourthTask()).after(FirstTask::class.java)
                 .build()
-            StartTaskManager.addContextAndTask(taskCreator).addCompleteListener {
+            StartTaskManager().addContextAndTask(taskCreator).addCompleteListener {
                 Log.d("StartTask:","complete")
             }.start()
             Log.d("StartTask:","click complete")
